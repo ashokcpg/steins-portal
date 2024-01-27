@@ -6,7 +6,7 @@ export default function Home() {
   // const [isLoggedIn, setIsLoggedIn ] = useState(localStorage.getItem('isLoggedIn'))
   return (
     !isLoggedIn ? 
-      <Login isLoggedIn={isLoggedIn} />
+      <Login  />
       : <h1>Please log in</h1>
   );
 }
