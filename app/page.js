@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Login } from "./_components/Login/Login";
 
 export default function Home() {
-  const [isLoggedIn, setIsLoggedIn ] = useState(localStorage.getItem('isLoggedIn'))
+  // const [isLoggedIn, setIsLoggedIn ] = useState(localStorage.getItem('isLoggedIn'))
   return (
     !isLoggedIn ? 
       <Login isLoggedIn={isLoggedIn} />
