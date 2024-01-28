@@ -15,7 +15,7 @@ export async function POST(req) {
         console.log("ashok user email",userEmail)
 
         const emailResponse = await resend.emails.send({
-            from: 'onboarding@resend.dev',
+            from: 'no-reply@backfromthefuture.tech',
             to: [`${userEmail}`], 
             subject: 'THANK YOU FOR SAVING YOUR MEMORIES',
             html: `<body class="bg-gray-100 p-4">
