@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { UserProvider } from '@auth0/nextjs-auth0/client';
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 import { getSession } from "@auth0/nextjs-auth0";
@@ -19,20 +20,26 @@ export default async function RootLayout({ children }) {
         <body className="flex h-full">
           {user ? (
             <>
-              <div className="flex items-center justify-center gap-3">
-                <div>
-                  <p>Logged in as </p>
-                  <p>{user.name}</p>
+                <div className="container">
+                  <div className="header flex flex-row gap-1">
+                    <p>Logged in as </p>
+                    <span>{user.name}</span>
+                    <img class="w-10 h-10 rounded-full" src={user.picture} alt="Rounded avatar" />
+                    <Link href="/api/auth/logout">
+                    <button>Logout</button>
+                    </Link>
+                  </div>
                 </div>
-                <img class="w-10 h-10 rounded-full" src={user.picture} alt="Rounded avatar" />
-                <a href="/api/auth/logout" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Logout</a>
-              </div>
             </>
           ) :
             (
               
-                <div className="flex justify-center items-center">
-                  <a href="/api/auth/login" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Login</a>
+                <div className="container">
+                  <div className="header">
+                    <Link href="/api/auth/login">
+                    <button>Login</button>
+                    </Link>
+                  </div>
                 </div>
             )}
           <div
