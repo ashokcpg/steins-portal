@@ -42,27 +42,27 @@ export async function POST(req) {
         });
 
         console.log("ashok backend email response", emailResponse)
-        // const response = await axios.post(
-        //     'https://ashokcpg.kintone.com/k/v1/record.json',
-        //     {
-        //         'app': 2,
-        //         'record': {
-        //             'userEmail': { 'value': `${userEmail}` },
-        //             'photoDescription': { 'value': `${photoDescription}` },
-        //             'photoMemoryDate': { 'value': `${photoPastDate}` },
-        //             'photoFutureDate': { 'value': `${photoFutureDate}` },
-        //             'photoFileKey': { 'value': `${fileKey}` },
-        //         }
-        //     },
-        //     {
-        //         headers: {
-        //             'X-Cybozu-API-Token': 'lhPWUMb3D63Pjr6BewA5gQyQMWP0bxKgZpWlmXUf',
-        //             'Content-Type': 'application/json'
-        //         }
-        //     }
-        // )
+        const response = await axios.post(
+            'https://ashokcpg.kintone.com/k/v1/record.json',
+            {
+                'app': 2,
+                'record': {
+                    'userEmail': { 'value': `${userEmail}` },
+                    'photoDescription': { 'value': `${photoDescription}` },
+                    'photoMemoryDate': { 'value': `${photoPastDate}` },
+                    'photoFutureDate': { 'value': `${photoFutureDate}` },
+                    'photoFileKey': { 'value': `${fileKey}` },
+                }
+            },
+            {
+                headers: {
+                    'X-Cybozu-API-Token': 'lhPWUMb3D63Pjr6BewA5gQyQMWP0bxKgZpWlmXUf',
+                    'Content-Type': 'application/json'
+                }
+            }
+        )
 
-        // console.log("ashok backend upload response", response)
+        console.log("ashok backend upload response", response)
 
         return Response.json(response.data)
     } catch (error) {
