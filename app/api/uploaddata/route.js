@@ -1,25 +1,35 @@
-// import axios from 'axios'
+import axios from 'axios'
 
+export async function POST(req) {
+    const data = await req.json()
+    const { photoDescription, photoPastDate, photoFutureDate, userEmail, fileKey } = data
+    console.log("ashok backend", photoDescription, photoPastDate, photoFutureDate, userEmail, fileKey)
+    try {
+        const response = await axios.post(
+            'https://ashokcpg.kintone.com/k/v1/record.json',
+            {
+                'app': 2,
+                'record': {
+                    'userEmail': { 'value': `${userEmail}` },
+                    'photoDescription': { 'value': `${photoDescription}` },
+                    'photoMemoryDate': { 'value': `${photoPastDate}` },
+                    'photoFutureDate': { 'value': `${photoFutureDate}` },
+                    'photoFileKey': { 'value': `${fileKey}` },
+                }
+            },
+            {
+                headers: {
+                    'X-Cybozu-API-Token': 'lhPWUMb3D63Pjr6BewA5gQyQMWP0bxKgZpWlmXUf',
+                    'Content-Type': 'application/json'
+                }
+            }
+        )
 
-// export async function POST(request){
-//     const { userEmail, photoDescription, photoPastDate, photoFutureDate } = request.body
-
-//     // random hex string for file key 
-//     const fileKey = Math.random().toString(16).slice(2)
-
-//     console.log("post data ash",
-//         userEmail,
-//         photoDescription,
-//         photoPastDate,
-//         photoFutureDate,
-//         fileKey)
-
-//     try {
-
+        console.log("ashok backend upload response", response)
         
-//         console.log("post data response", response)
-//         return Response.json(response)
-//     } catch (error) {
-//         console.log("upload data error",error)
-//     }
-// }
+        return Response.json(response.data)
+    } catch (error) {
+        console.log("ashok", error)
+        return Response.json(error)
+    }
+}

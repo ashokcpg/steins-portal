@@ -51,26 +51,13 @@ const Upload = () => {
 try{
 
   const response = await axios.post(
-    'https://ashokcpg.kintone.com/k/v1/record.json',
+    '/api/uploaddata',
     {
-      'app': 2,
-      'record': {
-        'userEmail': {'value':`${userEmail}`},
-        'photoDescription': {'value':`${photoDescription}`},
-        'photoMemoryDate': {'value':`${photoPastDate}`},
-        'photoFutureDate': {'value':`${photoFutureDate}`},
-        'photoFileKey': {'value':`${fileKey}`},
-      }
-    },
-    {
-      headers: {
-        'X-Cybozu-API-Token': 'lhPWUMb3D63Pjr6BewA5gQyQMWP0bxKgZpWlmXUf',
-        'sec-ch-ua': '"Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"',
-        'sec-ch-ua-mobile': '?1',
-        'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36',
-        'Referer': 'https://backfromthefuture.tech/',
-        'sec-ch-ua-platform': '"Android"'
-      }
+      'userEmail': userEmail,
+      'photoDescription': photoDescription,
+      'photoPastDate': photoPastDate,
+      'photoFutureDate': photoFutureDate,
+      'fileKey': fileKey,
     }
   );
   console.log("upload response ash", response)
