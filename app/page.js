@@ -40,7 +40,7 @@ export default function Home() {
     },[])
     
     const fetchUserData = async () => {
-      const response = await axios.get(`https://backfromthefuture.tech/api/userposts?email=${user.email}`)
+      const response = await axios.get(`/api/userposts?email=${user.email}`)
       console.log("ash",response.data)
       setUserData(response.data)
     }

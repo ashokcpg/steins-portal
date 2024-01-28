@@ -27,26 +27,6 @@ const Upload = () => {
 
   const fetchData = async (formData) => {
     console.log("sujal", formData)
-    // try {
-    //   const form = new FormData();
-    //   form.append('file', fs.readFileSync('FILEPATH'), 'FILEPATH');
-
-    //   const response = await axios.post(
-    //     'https://ashokcpg.kintone.com/k/v1/file.json',
-    //     form,
-    //     {
-    //       headers: {
-    //         ...form.getHeaders(),
-    //         'X-Cybozu-API-Token': 'lhPWUMb3D63Pjr6BewA5gQyQMWP0bxKgZpWlmXUf'
-    //       }
-    //     }
-    //   );
-
-    //   console.log("sujal 2",response);
-    // } catch (error) {
-    //   // Handle errors
-    //   console.error("sujal 3",error);
-    // }
   };
 
 
