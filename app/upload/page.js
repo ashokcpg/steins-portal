@@ -1,13 +1,14 @@
 'use client'
-import React, { useState , useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import ImageUpload from '../_components/ImageUpload/ImageUpload'
 import axios from 'axios'
+import PolariodImage from '../_components/PolaroidImage'
+import Link from 'next/link'
+import { useUser } from '@auth0/nextjs-auth0/client';
+
 
 const Upload = () => {
-
-  const [fileKey, setFileKey] = useState('')
-
-
+  const { user } = useUser()
 
   const [file, setFile] = useState()
   const [fileObject, setFileObject] = useState()
@@ -18,13 +19,14 @@ const Upload = () => {
     if (fileObject) {
       const formData = new FormData();
       formData.append('file', fileObject);
-      console.log("sujal 1",formData)
+      console.log("sujal 1", formData)
       fetchData(fileObject);
 
-    }}, [fileObject])
+    }
+  }, [fileObject])
 
   const fetchData = async (formData) => {
-    console.log("sujal",formData)
+    console.log("sujal", formData)
     // try {
     //   const form = new FormData();
     //   form.append('file', fs.readFileSync('FILEPATH'), 'FILEPATH');
@@ -57,7 +59,60 @@ const Upload = () => {
     setPhotoInfo({ ...photoInfo, [e.target.name]: e.target.value })
   }
 
+  const uploadData = async () => {
+// random hex filekey 
+    const fileKey = Math.random().toString(16).slice(2)
+    // userEmail, photoDescription, photoPastDate, photoFutureDate
+
+    const { photoDescription, publishedDate: photoPastDate, futureDate: photoFutureDate } = photoInfo
+    const { email:userEmail } = user
+
+    console.log("ashok",userEmail, photoDescription, photoPastDate, photoFutureDate, fileKey)
+try{
+
+  const response = await axios.post(
+    'https://ashokcpg.kintone.com/k/v1/record.json',
+    {
+      'app': 2,
+      'record': {
+        'userEmail': {'value':`${userEmail}`},
+        'photoDescription': {'value':`${photoDescription}`},
+        'photoMemoryDate': {'value':`${photoPastDate}`},
+        'photoFutureDate': {'value':`${photoFutureDate}`},
+        'photoFileKey': {'value':`${fileKey}`},
+      }
+    },
+    {
+      headers: {
+        'X-Cybozu-API-Token': 'lhPWUMb3D63Pjr6BewA5gQyQMWP0bxKgZpWlmXUf',
+        'sec-ch-ua': '"Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"',
+        'sec-ch-ua-mobile': '?1',
+        'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36',
+        'Referer': 'http://localhost:3000/',
+        'sec-ch-ua-platform': '"Android"'
+      }
+    }
+  );
+  console.log("upload response ash", response)
+
+      // redirect to home
+      window.location.href = '/'
+    }catch(error){
+      // clear form data
+      // setFileObject(null)
+      // setFile(null)
+      // setPhotoInfo({})
+      console.log("upload data error",error)
+
+    }
+  }
   return (<>
+    <div className='mb-5'>
+
+      <Link href={"/"}>
+        <button className='bg-red-500 text-white px-3 py-1 rounded-md'>Go Home!</button>
+      </Link>
+    </div>
     {
       !fileObject && <div className='flex flex-column gap-5 flex-col'>
         <ImageUpload onChange={handleFileChange} />
@@ -82,18 +137,17 @@ const Upload = () => {
             </div>
           </div>
         </div>
-        <div className='flex justify-end'>
+        <div className='flex flex-row w-full justify-between'>
+          <button onClick={uploadData} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+            Upload
+          </button>
           <button className='bg-red-500 text-white px-3 py-1 rounded-md' onClick={() => {
             setFileObject(null)
             setFile(null)
             setPhotoInfo({})
           }}>Remove</button>
         </div>
-        <div class="polaroid w-full">
-          <div className="single-day-regular caption">{photoInfo?.photoDescription || 'Your Description'}</div>
-          <p className='single-day-regular-italic'>{photoInfo?.publishedDate || '2004-12-13'}</p>
-          <img src={file} alt="asd" />
-        </div>
+        <PolariodImage photoDescription={photoInfo.photoDescription} publishedDate={photoInfo.publishedDate} file={file} />
       </div>
       }
     </div >

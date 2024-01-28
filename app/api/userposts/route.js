@@ -20,7 +20,7 @@ export async function GET(request) {
                 'query': 'order by $id asc limit 100 offset 0',
                 'fields': [
                     'photoDescription',
-                    'photoPastDate',
+                    'photoMemoryDate',
                     'photoFutureDate',
                     'fileKey',
                     'userEmail'

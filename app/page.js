@@ -4,12 +4,20 @@
 import { Button } from "./_components/ui/button";
 // import { getSession } from "@auth0/nextjs-auth0";
 import Image from "next/image";
-
+import axios from 'axios'
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Link from "next/link";
+import { staticPhotos } from "@/lib/imageList";
+import PolaroidImage, { PolaroidImageAuth } from "./_components/PolaroidImage";
+import { useState, useEffect } from "react";
+
+const getRandomPhotoURL = () => {
+  const randomIndex = Math.floor(Math.random() * staticPhotos.length);
+  return staticPhotos[randomIndex].file;
+};
+
 export default function Home() {
   const { user, error, isLoading } = useUser();
-  // const { user } = await getSession()
 
   if (isLoading)
     return (
@@ -26,97 +34,63 @@ export default function Home() {
     );
 
   if (user) {
+    const [userData, setUserData] = useState([])
+    useEffect(() =>{
+      fetchUserData()
+    },[])
+    
+    const fetchUserData = async () => {
+      const response = await axios.get(`http://localhost:3000/api/userposts?email=${user.email}`)
+      console.log("ash",response.data)
+      setUserData(response.data)
+    }
+
     return (
       <>
-        <div className="flex items-center justify-center h-full">
-          <p className="text-6xl">
-            Please, click the upload button to preserve your memories.
-          </p>
-        </div>
+        <div className="flex items-center text-lg font-bold justify-start">
+          Preserve your precious moments!
+          </div>
         <Link href={"/upload"}>
           <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
             Upload
           </button>
         </Link>
+        <div className="flex flex-wrap gap-4 mt-4">
+
+        {
+          userData && userData.map((photo) => {
+            return <PolaroidImageAuth key={photo.fileKey.value} photoDescription={photo.photoDescription.value} publishedDate={photo.photoMemoryDate.value} file={getRandomPhotoURL()} />
+          })
+        }
+        </div>
+
       </>
     );
   } else {
     return (
       <>
-         <div className="flex items-center justify-center h-full">
-      <div className="grid grid-cols-4 gap-4">
-        <div className="w-full">
-          <Image
-            className="tryImage"
-            src="https://cdn.pixabay.com/photo/2023/12/12/16/15/winter-8445565_1280.jpg"
-            width={500}
-            height={500}
-            alt="Picture of the vercel logo"
-          />
+        <div className="flex items-center justify-center h-full">
+          {/* <Link href={"/api/auth/login"}>
+            <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+              Login
+            </button>
+          </Link> */}
+          <div className="mt-80 grid grid-cols-4 gap-4">
+              {/* <Image
+                className="tryImage"
+                src=""
+                width={500}
+                height={500}
+                alt="Picture of the vercel logo"
+              /> */}
+              {
+                
+                staticPhotos.slice(0,4).map((photo) => {
+                  return <PolaroidImage key={photo.id} photoDescription={photo.photoDescription} publishedDate={photo.publishedDate} file={photo.file} />
+                })
+              }
+          </div>
         </div>
-        <div className="w-full">
-          <Image
-            className="tryImage"
-            src="https://cdn.pixabay.com/photo/2016/09/01/13/52/steampunk-1636156_1280.png"
-            width={500}
-            height={500}
-            alt="Picture of the vercel logo"
-          />
-        </div>
-        <div className="w-full">
-          <Image
-            className="tryImage"
-            src="https://cdn.pixabay.com/photo/2023/12/12/16/15/winter-8445565_1280.jpg"
-            width={500}
-            height={500}
-            alt="Picture of the vercel logo"
-          />
-        </div>
-        <div className="w-full">
-          <Image
-            className="tryImage"
-            src="https://cdn.pixabay.com/photo/2023/12/12/16/15/winter-8445565_1280.jpg"
-            width={500}
-            height={500}
-            alt="Picture of the vercel logo"
-          />
-        </div>
-        <div className="w-full">
-          <Image
-            className="tryImage"
-            src="https://cdn.pixabay.com/photo/2023/12/12/16/15/winter-8445565_1280.jpg"
-            width={500}
-            height={500}
-            alt="Picture of the vercel logo"
-          />
-        </div>
-        <div className="w-full">
-          <Image
-            className="tryImage"
-            src="https://cdn.pixabay.com/photo/2023/12/12/16/15/winter-8445565_1280.jpg"
-            width={500}
-            height={500}
-            alt="Picture of the vercel logo"
-          />
-        </div>
-        <div className="w-full">
-          <Image
-            className="tryImage"
-            src="https://cdn.pixabay.com/photo/2023/12/12/16/15/winter-8445565_1280.jpg"
-            width={500}
-            height={500}
-            alt="Picture of the vercel logo"
-          />
-        </div>
-      </div>
-    </div>
-  
-        
-        <Link href={"/api/auth/login"}>
-          <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-            Login
-          </button>
-        </Link>
       </>
     );
   }
