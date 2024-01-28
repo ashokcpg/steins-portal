@@ -88,7 +88,7 @@ try{
         'sec-ch-ua': '"Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"',
         'sec-ch-ua-mobile': '?1',
         'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36',
-        'Referer': 'http://localhost:3000/',
+        'Referer': 'https://backfromthefuture.tech/',
         'sec-ch-ua-platform': '"Android"'
       }
     }
